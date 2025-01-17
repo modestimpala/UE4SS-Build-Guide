@@ -1,0 +1,6 @@
+[submodule "RE-UE4SS"]
+	path = RE-UE4SS
+	url = https://github.com/modestimpala/RE-UE4SS
+[submodule "extern/libvotv"]
+	path = extern/libvotv
+	url = https://github.com/modestimpala/libvotv
