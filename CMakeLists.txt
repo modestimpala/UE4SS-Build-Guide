@@ -17,3 +17,6 @@ endif()
 
 
 
+
+# After all add_subdirectory calls
+include(${CMAKE_CURRENT_SOURCE_DIR}/folder_organization.cmake)
