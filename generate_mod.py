@@ -11,13 +11,17 @@ class ModGenerator:
         self.mod_name = mod_name + "Cpp"
         self.profile_name = profile_name
         self.base_dir = Path(base_dir)
-        self.mod_dir = self.base_dir / mod_name
+        # Create Mods subdirectory if it doesn't exist
+        self.mods_dir = self.base_dir / "Mods"
+        self.mods_dir.mkdir(exist_ok=True)
+        # Place mod directory inside Mods/
+        self.mod_dir = self.mods_dir / self.mod_name
         self.template_url = "https://github.com/modestimpala/SampleCppMod.git"
 
     def clone_template(self):
         """Clone the SampleCppMod template repository."""
         print(f"Cloning template from {self.template_url}...")
-        subprocess.run(["git", "clone", self.template_url, self.mod_name], cwd=self.base_dir, check=True)
+        subprocess.run(["git", "clone", self.template_url, self.mod_name], cwd=self.mods_dir, check=True)
         
         # Remove the .git directory to detach from template repo
         shutil.rmtree(self.mod_dir / ".git", ignore_errors=True)
@@ -33,14 +37,14 @@ class ModGenerator:
         pattern = r'(project\s*\(\s*)SampleCppMod(\s*\))'
         content = re.sub(pattern, f'\\1{self.mod_name}\\2', content)
         
-        # Update mod output path with unique variable name while preserving formatting
-        pattern = r'(set\s*\(\s*MOD_OUTPUT_PATH3\s*")([^"]*?)("(?:\s*\)))'
-        new_path = f"C:/Users/$ENV{{USERNAME}}/AppData/Roaming/r2modmanPlus-local/VotV/profiles/{self.profile_name}/shimloader/mod/{self.mod_name}/dlls"
-        content = re.sub(pattern, f'set(MOD_OUTPUT_PATH_{self.mod_name.upper()} "{new_path}"\\3', content)
+        # Update the variable definition
+        pattern = r'set\(MOD_OUTPUT_PATH\s+"[^"]*"\s+CACHE\s+PATH\s+"[^"]*"\)'
+        new_path = f'set(MOD_OUTPUT_PATH_{self.mod_name.upper()} "C:/Users/$ENV{{USERNAME}}/AppData/Roaming/r2modmanPlus-local/VotV/profiles/{self.profile_name}/shimloader/mod/{self.mod_name}/dlls" CACHE PATH "Path to mod output directory")'
+        content = re.sub(pattern, new_path, content)
         
-        # Update the reference to this variable in the copy command while preserving formatting
-        pattern = r'(\$\{\s*)MOD_OUTPUT_PATH3(\s*\})'
-        content = re.sub(pattern, f'\\1MOD_OUTPUT_PATH_{self.mod_name.upper()}\\2', content)
+        # Update references to MOD_OUTPUT_PATH in the copy command
+        pattern = r'\${MOD_OUTPUT_PATH}'
+        content = re.sub(pattern, f'${{MOD_OUTPUT_PATH_{self.mod_name.upper()}}}', content)
         
         # Write the modified content with original line endings
         with open(cmake_path, "w", newline='\n') as f:
@@ -115,8 +119,11 @@ class ModGenerator:
 
         with open(main_cmake_path, "r") as f:
             content = f.read()
-        # Just append a new add_subdirectory line
-        content += f"\nadd_subdirectory({self.mod_name})\n"
+        # Add subdirectory with Mods prefix
+        content += f"\nadd_subdirectory(Mods/{self.mod_name})\n"
+    
+        with open(main_cmake_path, "w") as f:
+            f.write(content)
 
     def setup_mod(self):
         """Set up the mod by cloning template and modifying files."""
