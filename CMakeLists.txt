@@ -8,8 +8,8 @@ endif()
 
 add_subdirectory(RE-UE4SS)
 
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libvotv")
-    add_subdirectory(libvotv)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/libvotv")
+    add_subdirectory(extern/libvotv)
 else()
     message(STATUS "libvotv directory not found, skipping...")
 endif()
