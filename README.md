@@ -17,12 +17,8 @@
 ## Build
 
 1. Clone the repo, cd inside.
-2. Execute this command: `git submodule update --init --recursive`
-
-    Make sure your Github account is linked to your Epic Games account for UE source access.
-    Do not use the `--remote` option because that will force third-party dependencies to update to the latest commit, and that can break things.
-    You will need your github account to be linked to an Epic games account to pull the Unreal pseudo code submodule.
-3. There are two different ways you can build this fork.
+2. Run 'init_submodules.bat' file.
+3. There are two different ways you can generate build files:
 
     gen.bat -> Normal cmake command to generate VS Solution with MSVC 14.40
 
