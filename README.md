@@ -24,7 +24,7 @@
 
     gen_msvcrt_fix.bat -> Cmake generate + remove "/defaultlib:msvcrt" If you experience linking related compilation issues, clear cmake cache and try building with this bat.
 
-4. Open MyMods Solution file and build for Game__Shipping__Win64 (if making mods for VotV)
+4. Open Output\MyMods Solution file and build for Game__Shipping__Win64 (if making mods for VotV)
 
 ### Issues
 
