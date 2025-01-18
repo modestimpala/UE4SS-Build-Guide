@@ -4,6 +4,7 @@
 
 # Mods
 Mods/*
+!Mods/CMakeLists.txt
 
 # Visual Studio
 .vs/
