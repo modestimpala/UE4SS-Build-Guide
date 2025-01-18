@@ -79,6 +79,8 @@ set_target_properties(
     PROPERTIES FOLDER "ThirdParty/Other"
 )
 
+
+# This doesn't seem to work 
 # Get all targets and put uncategorized ones in Mods
 function(organize_uncategorized_targets)
     # Get all targets in the project
