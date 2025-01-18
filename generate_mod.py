@@ -110,17 +110,17 @@ class ModGenerator:
         with open(dllmain_path, "w") as f:
             f.write(content)
 
-    def update_main_cmake(self):
+    def update_mods_cmake(self):
         """Update the main CMakeLists.txt to include the new mod."""
-        main_cmake_path = self.base_dir / "CMakeLists.txt"
+        main_cmake_path = self.base_dir / "Mods" /  "CMakeLists.txt"
         if not main_cmake_path.exists():
-            print("Error: Main CMakeLists.txt not found!")
+            print("Error: Mods CMakeLists.txt not found!")
             return
 
         with open(main_cmake_path, "r") as f:
             content = f.read()
         # Add subdirectory with Mods prefix
-        content += f"\nadd_subdirectory(Mods/{self.mod_name})\n"
+        content += f"\nadd_subdirectory({self.mod_name})\n"
     
         with open(main_cmake_path, "w") as f:
             f.write(content)
@@ -131,7 +131,7 @@ class ModGenerator:
             self.clone_template()
             self.modify_cmake()
             self.modify_dllmain()
-            self.update_main_cmake()
+            self.update_mods_cmake()
             print(f"Successfully created mod: {self.mod_name}")
         except Exception as e:
             print(f"Error creating mod: {e}")

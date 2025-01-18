@@ -16,6 +16,7 @@ endif()
 
 
 
+add_subdirectory(Mods)
 
 
 # After all add_subdirectory calls
